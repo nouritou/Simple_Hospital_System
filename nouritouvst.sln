@@ -1,31 +1,91 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.4.33213.308
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nouritouvst", "nouritouvst\nouritouvst.vcxproj", "{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Debug|x64.ActiveCfg = Debug|x64
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Debug|x64.Build.0 = Debug|x64
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Debug|x86.ActiveCfg = Debug|Win32
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Debug|x86.Build.0 = Debug|Win32
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Release|x64.ActiveCfg = Release|x64
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Release|x64.Build.0 = Release|x64
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Release|x86.ActiveCfg = Release|Win32
-		{AFA256E8-DCF2-4BCF-8A56-CAAF1E5AF963}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {80D94FFD-7FA2-4072-961A-B58466117FD7}
-	EndGlobalSection
-EndGlobal
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <map>
+#include <set>
+#define endl '\n' 
+#define ll long long 
+#define nouritou	ios_base::sync_with_stdio(false), cout.tie(NULL), cin.tie(NULL);
+using namespace std;
+class patients 
+{
+private:
+    map<int, deque<pair<string, string>>>spec; 
+public:
+    //Set Patient
+    void SetPatient(int specialization, string name, bool status) 
+    {
+        if (spec[specialization].size() == 5) 
+            cout << "Sorry, We can't add more patients for this specializtion.\n";
+        else 
+        {
+            if (status)
+                spec[specialization].push_front({ name,"urgent" });
+            else
+                spec[specialization].push_back({ name,"regular" });
+        }
+    
+    }
+    //Print
+    void print() 
+    {
+        for (auto it : spec) 
+        {
+            if (!it.second.size()) continue;
+            cout << 
+                "*******************\nThere are " << it.second.size() << 
+                " patients in specialization " << it.first << endl;
+            int sz = it.second.size();
+            for (int i = 0; i < sz; i++) cout << it.second[i].first << " " << it.second[i].second << endl;
+            cout << endl;
+        }
+    }
+    //Doctor & patients
+    void Doctor(int specializtion) 
+    {
+        if (!spec[specializtion].size()) cout << "No patients at the moment, Get rest, Dr.\n";
+        else 
+        {
+            cout << spec[specializtion][0].first << ", please, go with the doctor.\n";
+            spec[specializtion].pop_front();
+        }
+    }
+};
+int main()
+{
+    nouritou
+        int choice = 4;
+    patients obj;
+        do
+        {
+            cout << "Enter your choice:\n1) Add a new patient.\n2) Print all patients.\n3) Get next patient.\n4) Exit.\n";
+             cin >> choice;
+             if (choice == 1) 
+             {
+                 cout << "Enter specialization, name, status.\n";
+                 int specialization; string name; bool status;
+                 cin >> specialization >> name >> status;
+                 obj.SetPatient(specialization, name, status);
+             
+             }
+             else if (choice == 2) 
+             {
+                 obj.print(); 
+             }
+             else if (choice == 3) 
+             {
+                 int specialization;
+                 cout << "Enter specializtion.\n";
+                 cin >> specialization;
+                 obj.Doctor(specialization);
+             }
+        } while (choice != 4);
+        
+    return 0;
+}
